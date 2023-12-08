@@ -1,5 +1,6 @@
 import math, cv2, datetime
 import numpy as np
+from pyparsing import col
 
 # ----------------- Image Basics -----------------
 def show_image():
@@ -107,6 +108,9 @@ def draw_animation():
 
 
 # --------------- Mouse Events ---------------
+# events = [i for i in dir(cv2) if 'EVENT' in i]
+# print(events)
+
 def mouse_events():
     # img = np.ones((500, 500, 3), np.uint8) * 0
     img = cv2.imread("assets/img-2.jpg", 1) 
@@ -126,13 +130,53 @@ def mouse_events():
     i=0
     while True:
         cv2.imshow("Image", img)
-        i+=1
-        print(i)
         if cv2.waitKey(250) == ord('q'):
             break
     cv2.destroyAllWindows()
 
-mouse_events()
+def line_drawing():
+    img = np.zeros((500, 500, 3), np.uint8)
+    cv2.imshow("Image", img)
+    points = []
 
-events = [i for i in dir(cv2) if 'EVENT' in i]
-print(events)
+    def mouse_event(event, x, y, flags, param):
+        nonlocal points, img
+        if event == cv2.EVENT_LBUTTONDOWN:
+            cv2.circle(img, (x,y), 3, (0, 255, 255), -1)
+            points.append((x,y))
+            if len(points) >= 2:
+                cv2.line(img, points[-1], points[-2], (0, 255, 255), 2)
+        elif event == cv2.EVENT_RBUTTONDOWN:
+            points.clear()
+            img[:,:,:] = [0, 0, 0]
+
+
+    cv2.setMouseCallback("Image", mouse_event)
+
+    while True:
+        cv2.imshow("Image", img)
+        if cv2.waitKey(250) == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+def color_picker():
+    img = cv2.imread("assets/img-2.jpg", 1)
+    cv2.imshow("Image", img)
+
+    def mouse_event(event, x, y, flags, param) :
+        if event == cv2.EVENT_LBUTTONDOWN:
+            blue, green, red = img[y, x, 0], img[y, x, 1], img[y, x, 2]
+            # cv2.circle(img, (x,y), 1, (0, 255, 255), -1)
+            color_window = np.zeros((200, 200, 3), np.uint8)
+            color_window[50:,:,:] = [blue, green, red]
+            cv2.putText(color_window, f"BGR = ({blue}, {green}, {red})", (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+            cv2.imshow("Color", color_window)
+        
+    cv2.setMouseCallback("Image", mouse_event)
+
+    while True:
+        cv2.imshow("Image", img)
+        if cv2.waitKey(250) == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
