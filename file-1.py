@@ -180,3 +180,39 @@ def color_picker():
             break
     cv2.destroyAllWindows()
 
+
+# --------------- Image Functions ---------------
+def image_functions():
+    img = cv2.imread("assets/img-2.jpg", 1)
+    print(f"Size: {img.shape} \nType: {img.dtype} \nDimensions: {img.ndim} \nShape: {img.shape} \n")
+    
+    # Splitting and merging channels
+    b, g, r = cv2.split(img)
+    # img = cv2.merge((r, g, b))
+    img2 = cv2.merge([g])
+
+    # ROI = Region of Interest
+    # roi = img[239:359, 495:575]
+    # img[0:120, 0:80] = roi
+    cv2.imshow("Image", img)
+
+    def mouse_event(event, x, y, flags, param):
+        nonlocal img
+        if event == cv2.EVENT_LBUTTONDOWN:
+            print(f"Pixel: {x, y}")
+
+    cv2.setMouseCallback("Image", mouse_event)
+
+    img3 = cv2.resize(img, (400, 400))
+    img4 = cv2.resize(cv2.imread("assets/img-1.jpg", 1), (400, 400))
+    # img5 = cv2.add(img4, cv2.subtract(cv2.flip(img4, 1), img4))
+    img5 = cv2.addWeighted(img3, 0.5, img4, 0.5, 0)
+
+
+    while True:
+        cv2.imshow("Image", img5)
+        if cv2.waitKey(250) == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+image_functions()
