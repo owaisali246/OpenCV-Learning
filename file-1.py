@@ -171,7 +171,7 @@ def color_picker():
             color_window[50:,:,:] = [blue, green, red]
             cv2.putText(color_window, f"BGR = ({blue}, {green}, {red})", (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
             cv2.imshow("Color", color_window)
-        
+
     cv2.setMouseCallback("Image", mouse_event)
 
     while True:
