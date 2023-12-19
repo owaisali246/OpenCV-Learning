@@ -4,7 +4,7 @@ import numpy as np
 def algo_2():
 
     # Read the input image
-    image = cv.imread('assets/img-4.jpg')
+    image = cv.imread('assets/img-3.jpg')
     original = image.copy()
 
     # Convert the image to grayscale
@@ -53,8 +53,8 @@ def algo_2():
 
 def algo_1():
 
-    img = cv.imread('assets/img-4.jpg')
-    img2 = cv.imread('assets/img-4.jpg')
+    img = cv.imread('assets/img-2.jpg')
+    img2 = cv.imread('assets/img-2.jpg')
     assert img is not None, "file could not be read, check with os.path.exists()"
     gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
     ret, thresh = cv.threshold(gray,0,255,cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
