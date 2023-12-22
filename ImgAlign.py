@@ -59,7 +59,3 @@ cv.imshow('Original Image', img2)
 cv.imshow('Registered Image', img2Reg)
 cv.waitKey()
 cv.destroyAllWindows()
-
-
-
-

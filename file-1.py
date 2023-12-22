@@ -211,8 +211,110 @@ def image_functions():
 
     while True:
         cv2.imshow("Image", img5)
-        if cv2.waitKey(250) == ord('q'):
+        if cv2.waitKey(250) == 27 or cv2.waitKey(250) == ord('q'):
+            print(chr(27))
             break
     cv2.destroyAllWindows()
 
-image_functions()
+
+# --------------- Trackbars ---------------
+def nothing(x):
+        pass
+
+def trackbars():
+    img = np.zeros((500, 500, 3), np.uint8)
+    cv2.namedWindow("Image")
+
+    
+
+    cv2.createTrackbar("B", "Image", 0, 255, nothing)
+    cv2.createTrackbar("G", "Image", 0, 255, nothing)
+    cv2.createTrackbar("R", "Image", 0, 255, nothing)
+    cv2.createTrackbar("Switch", "Image", 0, 1, nothing)
+
+    while True:
+        cv2.imshow("Image", img)
+        if cv2.waitKey(250) == ord('q'):
+            break
+        b = cv2.getTrackbarPos("B", "Image")
+        g = cv2.getTrackbarPos("G", "Image")
+        r = cv2.getTrackbarPos("R", "Image")
+        img[:] = [b, g, r]
+
+    cv2.destroyAllWindows()
+
+
+# --------------- Object Detection and Tracking using HSV Color Space ---------------
+def HSVObjectTracker():
+    cv2.namedWindow("Tracking")
+    cv2.createTrackbar("LH", "Tracking", 0, 255, lambda x: print(x))
+    cv2.createTrackbar("LS", "Tracking", 0, 255, nothing)
+    cv2.createTrackbar("LV", "Tracking", 0, 255, nothing)
+    cv2.createTrackbar("UH", "Tracking", 0, 255, nothing)
+    cv2.createTrackbar("US", "Tracking", 0, 255, nothing)
+    cv2.createTrackbar("UV", "Tracking", 0, 255, nothing)
+
+    while True:
+        img = cv2.imread("assets/img-2.jpg", 1)
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+        l_h = cv2.getTrackbarPos("LH", "Tracking")
+        l_s = cv2.getTrackbarPos("LS", "Tracking")
+        l_v = cv2.getTrackbarPos("LV", "Tracking")
+        u_h = cv2.getTrackbarPos("UH", "Tracking")
+        u_s = cv2.getTrackbarPos("US", "Tracking")
+        u_v = cv2.getTrackbarPos("UV", "Tracking")
+
+        lower = np.array([l_h, l_s, l_v])
+        upper = np.array([u_h, u_s, u_v])
+
+        mask = cv2.inRange(hsv, lower, upper)
+        res = cv2.bitwise_and(img, img, mask=mask)
+
+        # cv2.imshow("Image", img)
+        cv2.imshow("Mask", mask)
+        cv2.imshow("Result", res)
+
+        if cv2.waitKey(100) == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+
+# --------------- Image Thresholding ---------------
+def imageThreshoulding():
+    img = cv2.imread("assets/img-4.jpg", 0)
+    ret, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+    ret, thresh2 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
+    ret, thresh3 = cv2.threshold(img, 127, 255, cv2.THRESH_TRUNC)
+    ret, thresh4 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO)
+    ret, thresh5 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO_INV)
+
+    cv2.imshow("Image", img)
+    cv2.imshow("Thresh1", thresh1)
+    cv2.imshow("Thresh2", thresh2)
+    cv2.imshow("Thresh3", thresh3)
+    cv2.imshow("Thresh4", thresh4)
+    cv2.imshow("Thresh5", thresh5)
+
+    if cv2.waitKey(0) == ord('q'):
+        cv2.destroyAllWindows()
+
+
+def adaptiveThresholding():
+    img = cv2.imread("assets/img-4.jpg", 0)
+    ret, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+    thresh2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+    thresh3 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+
+    cv2.imshow("Image", img)
+    cv2.imshow("Thresh1", thresh1)
+    cv2.imshow("Thresh2", thresh2)
+    cv2.imshow("Thresh3", thresh3)
+
+    if cv2.waitKey(0) == ord('q'):
+        cv2.destroyAllWindows()
+
+
+
+
+
