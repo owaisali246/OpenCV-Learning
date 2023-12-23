@@ -1,6 +1,6 @@
 import math, cv2, datetime
 import numpy as np
-from pyparsing import col
+from matplotlib import pyplot as plt
 
 # ----------------- Image Basics -----------------
 def show_image():
@@ -289,15 +289,24 @@ def imageThreshoulding():
     ret, thresh4 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO)
     ret, thresh5 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO_INV)
 
-    cv2.imshow("Image", img)
-    cv2.imshow("Thresh1", thresh1)
-    cv2.imshow("Thresh2", thresh2)
-    cv2.imshow("Thresh3", thresh3)
-    cv2.imshow("Thresh4", thresh4)
-    cv2.imshow("Thresh5", thresh5)
+    Titles = ["Original Image", "Binary", "Binary Inverse", "Trunc", "To Zero", "To Zero Inverse"]
+    Images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
 
-    if cv2.waitKey(0) == ord('q'):
-        cv2.destroyAllWindows()
+    for i in range(6):
+        plt.subplot(2, 3, i+1)
+        plt.imshow(Images[i], "gray"), plt.title(Titles[i])
+        plt.xticks([]), plt.yticks([])
+    plt.show()
+
+    # cv2.imshow("Image", img)
+    # cv2.imshow("Thresh1", thresh1)
+    # cv2.imshow("Thresh2", thresh2)
+    # cv2.imshow("Thresh3", thresh3)
+    # cv2.imshow("Thresh4", thresh4)
+    # cv2.imshow("Thresh5", thresh5)
+
+    # if cv2.waitKey(0) == ord('q'):
+    #     cv2.destroyAllWindows()
 
 
 def adaptiveThresholding():
@@ -315,6 +324,33 @@ def adaptiveThresholding():
         cv2.destroyAllWindows()
 
 
+def matplotWorking():
+    img = cv2.imread("assets/img-2.jpg", 1)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    plt.imshow(img, cmap="gray", interpolation="bicubic")
+    plt.xticks([]), plt.yticks([])
+    plt.show()
 
+
+# --------------- Bitwise Operations ---------------
+def bitwiseOperations():
+    img1 = np.zeros((640, 640, 3), np.uint8)
+    img2 = cv2.cvtColor(cv2.imread("assets/img-8.jpg", 1), cv2.COLOR_BGR2RGB)
+    img3 = cv2.cvtColor(cv2.imread("assets/img-9.jpg", 1), cv2.COLOR_BGR2RGB)
+
+    bitwiseAnd = cv2.bitwise_and(img3, img2)
+    bitwiseOr = cv2.bitwise_or(img2, img3)
+    bitwiseXor = cv2.bitwise_xor(img2, img1)
+    bitwiseNot = cv2.bitwise_not(img2)
+
+    Titles = ["Image 2", "Image 3", "Bitwise And", "Bitwise Or", "Bitwise Xor", "Bitwise Not"]
+    Images = [img2, img3, bitwiseAnd, bitwiseOr, bitwiseXor, bitwiseNot]
+
+    for i in range(6):
+        plt.subplot(2, 3, i+1)
+        plt.imshow(Images[i], "gray"), plt.title(Titles[i])
+        plt.xticks([]), plt.yticks([])
+
+    plt.show()
 
 
