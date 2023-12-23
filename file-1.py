@@ -354,3 +354,25 @@ def bitwiseOperations():
     plt.show()
 
 
+# --------------- Morphological Transformations ---------------
+def morphologyTransformations():
+    img = cv2.cvtColor(cv2.imread("assets/img-10.jpg", 1), cv2.COLOR_BGR2RGB)
+    kernel = np.ones((10,10), np.uint8)
+
+    erosion = cv2.erode(img, kernel, iterations=1)
+    dilation = cv2.dilate(img, kernel, iterations=1)
+    opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel) # erosion followed by dilation
+    closing = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel) # dilation followed by erosion
+    gradient = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel) # difference between dilation and erosion
+    tophat = cv2.morphologyEx(img, cv2.MORPH_TOPHAT, kernel) # difference between input image and opening of the image
+
+    Titles = ["Image", "Erosion", "Dilation", "Opening", "Closing", "Gradient", "Tophat"]
+    Images = [img, erosion, dilation, opening, closing, gradient, tophat]
+
+    for i in range(7):
+        plt.subplot(2, 4, i+1)
+        plt.imshow(Images[i], "gray"), plt.title(Titles[i])
+        plt.xticks([]), plt.yticks([])
+    plt.show()
+
+morphologyTransformations()
